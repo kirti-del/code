@@ -1,0 +1,339 @@
+public class recursion
+{
+    public static void stringcompress(String ques,String ans,int count)
+    {
+        if(ques.length()==0)
+        {
+            System.out.println(ans);
+            return;
+        }
+        if(ques.length()>1 && ques.charAt(0)==ques.charAt(1))
+        {
+            stringcompress(ques.substring(1),ans,count+1);
+        }
+        else
+            stringcompress(ques.substring(1),ans+ques.charAt(0)+count+"",1);
+    }
+    public static void mazepath(int sr,int sc,int er,int ec,String ans)
+    {
+        if(sr==er && sc==ec)
+        {
+            System.out.println(ans);
+            return;
+        }
+        if(sc+1<=ec)
+        {
+            mazepath(sr,sc+1,er,ec,ans+"H");
+        }
+        if(sr+1<=er && sc+1<=ec)
+        {
+            mazepath(sr+1,sc+1,er,ec,ans+"D");
+        }
+        if(sr+1<=er)
+        {
+            mazepath(sr+1,sc,er,ec,ans+"V");
+        }
+    }
+    public static void multimoves(int sr,int sc,int er,int ec,String ans)
+    {
+        if(sr==er && sc==ec)
+        {
+            System.out.print(ans+" ");
+            return;
+        }
+        for(int i=1;sr+i<=er;i++)
+        {
+            multimoves(sr+i,sc,er,ec,ans+"V"+i);
+        }
+        for(int i=1;sc+i<=ec;i++)
+        {
+            multimoves(sr,sc+i,er,ec,ans+"H"+i);
+        }        
+
+        for(int i=1;sr+i<=er && sc+i<=ec;i++)
+        {
+            multimoves(sr+i,sc+i,er,ec,ans+"D"+i);
+        }      
+    }
+    public static void boardpath(int target,int vidx,String ans)
+    {
+        if(vidx==target)
+        {
+            System.out.print(ans+" ");
+            return;
+        }
+        for(int i=1;vidx+i<=target && i<=6;i++)
+        {
+            boardpath(target,vidx+i,ans+i);
+        }
+    }
+    public static void permutation(String ques,String ans)
+    {
+        if(ques.length()==0)
+        {
+            System.out.print(ans+" ");
+            return;
+        }
+        for(int i=0;i<ques.length();i++)
+        {
+            char ch=ques.charAt(i);
+            String roq=ques.substring(0,i)+ques.substring(i+1);
+            permutation(roq,ans+ch);
+        }
+    }
+    /*public static void permu_nodupli(String ques,String ans)
+    {
+        if(ques.length()==0)
+        {
+            System.out.print(ans+" ");
+            return;
+        }
+        boolean[] mapping=new boolean(26,false);
+        for(int i=0;i<ques.length();i++)
+        {
+            char ch=ques.charAt(i);
+            if(mapping[ch-'a']==false)
+            {
+                mapping[ch-'a']=true;
+                String roq=ques.substring(0,i)+ques.substring(i+1);
+                permu_nodupli(roq,ans+ch);
+            }
+        }
+    }*/
+    public static int equiset(int[] arr,int vidx,int set1,int set2,String ans1,String ans2)
+    {
+        if(vidx==arr.length)
+        {
+            if(set1==set2)
+            {
+                System.out.println(ans1+" = "+ans2);
+                return 1;
+            }
+            return 0;
+        }
+        int count=0;
+        count+=equiset(arr,vidx+1,set1+arr[vidx],set2,ans1+arr[vidx]+" ",ans2);
+        count+=equiset(arr,vidx+1,set1,set2+arr[vidx],ans1,ans2+arr[vidx]+" ");
+        return count;
+    }
+    //============coinchangetype=============================================
+    public static void coinchagepermu_1(int[] arr,int target,String ans)
+    {
+        if(target==0)
+        {
+            System.out.print(ans+" ");
+            return;
+        }
+        for(int i=0;i<arr.length;i++)
+        {
+            if(target-arr[i]>=0)
+            {
+                coinchagepermu_1(arr,target-arr[i],ans+arr[i]);
+            }
+        }
+    } 
+    public static void coinchangecombi_1(int[] arr,int target,int vidx,String ans)
+    {
+        if(target==0)
+        {
+            System.out.print(ans+" ");
+            return;
+        }
+        for(int i=vidx;i<arr.length;i++)
+        {
+            if(target-arr[i]>=0)
+            {
+                coinchangecombi_1(arr,target-arr[i],i,ans+arr[i]);
+            }
+        }
+    }
+    public static void coinchangecombi_2(int[] arr,int target,int vidx,String ans)
+    {
+        if(target==0)
+        {
+            System.out.print(ans+" ");
+            return;
+        }
+        for(int i=vidx;i<arr.length;i++)
+        {
+            if(target-arr[i]>=0)
+            {
+                coinchangecombi_2(arr,target-arr[i],i+1,ans+arr[i]);
+            }
+        }
+    }
+    public static void coinchangepermu_nodupli(int[] arr,int target,boolean[] isdone,String ans)
+    {
+        if(target==0)
+        {
+            System.out.print(ans+" ");
+            return;
+        }
+        for(int i=0;i<arr.length;i++)
+        {
+            if(target-arr[i]>=0 && isdone[i]==false)
+            {
+                isdone[i]=true;
+                coinchangepermu_nodupli(arr,target-arr[i],isdone,ans+arr[i]);
+                isdone[i]=false;
+            }
+        }
+    }
+    public static void coinchangecombi_3(int[] arr,int target,int vidx,String ans)
+    {
+        if(vidx==arr.length || (target==0 && ans.length()>0))
+        {
+            if(target==0)
+            {
+                System.out.print(ans+" ");
+            }
+            return;
+        }
+        if(target-arr[vidx]>=0)
+        {
+        coinchangecombi_3(arr,target-arr[vidx],vidx,ans+arr[vidx]);
+        }
+        coinchangecombi_3(arr,target,vidx+1,ans);
+    }
+    public static void coinchangepermu_3(int[] arr,int vidx,int target,String ans)
+    {
+        if(vidx==arr.length || (target==0 && ans.length()>0))
+        {
+            if(target==0)
+            {
+                System.out.print(ans+" ");
+            }
+            return;
+        }
+        if(target-arr[vidx]>=0)
+        {
+            coinchangepermu_3(arr,0,target-arr[vidx],ans+arr[vidx]);
+        }
+        coinchangepermu_3(arr,vidx+1,target,ans);
+    }
+    //======end of coin change type ques========//
+    public static void queencombi(int boxes,int tnq,int qloc,int qpsf,String ans)
+    {
+        if(qpsf==tnq && ans.length()>0)
+        {
+            System.out.print(ans+" ");
+            return;
+        }
+        for(int i=qloc;i<boxes;i++)
+        {
+            queencombi(boxes,tnq,i+1,qpsf+1,ans+"q"+(qpsf+1)+"@b"+(i+1));
+        }
+    }
+    public static int queenpermu(int boxes,int tnq,int qpsf,boolean[] loc,String ans)
+    {
+        int count=0;
+        if(qpsf==tnq && ans.length()>0)
+        {
+            System.out.print(ans+" ");
+            return 1;
+        }
+        for(int i=0;i<boxes;i++)
+        {
+            if(!loc[i])
+            {
+                loc[i]=true;
+                count+=queenpermu(boxes,tnq,qpsf+1,loc,ans+"q"+(qpsf+1)+"@b"+(i+1));
+                loc[i]=false;
+            }
+        }
+        return count;
+    }
+    public static void qsubseqcombi(int boxes,int tnq,int qloc,int qpsf,String ans)
+    {
+        if(qpsf==tnq)
+        {
+            System.out.print(ans+" ");
+            return;
+        }
+        if(qloc<boxes)
+        {
+            qsubseqcombi(boxes,tnq,qloc+1,qpsf+1,ans+"q"+(qpsf+1)+"@b"+(qloc+1));
+            qsubseqcombi(boxes,tnq,qloc+1,qpsf,ans);
+        }
+    }
+    public static void qsubseqpermu(int boxes,int tnq,int qloc,int qpsf,boolean[] loc,String ans)
+    {
+        if(qpsf==tnq)
+        {
+            System.out.print(ans+" ");
+            return;
+        }
+        if(qloc<boxes)
+        {
+            if(!loc[qloc])
+            {
+                loc[qloc]=true;
+                qsubseqpermu(boxes,tnq,qloc+1,qpsf+1,loc,ans+"q"+(qpsf+1)+"@b"+(qloc+1));
+                loc[qloc]=false;
+                qsubseqpermu(boxes,tnq,qloc+1,qpsf,loc,ans);
+            }
+        }
+    }
+    public static boolean issafetoplace(boolean[3][3] boxes,int x,int y)
+    {
+        int dir[4][2]={{0,-1},{-1,-1},{-1,0},{-1,1}};
+        for(int d=0;d<4;d++)
+        {
+            for(int rad=0;rad<boxes.size();rad++)
+            {
+                int r=x+rad*dir[d][0];
+                int c=y+rad*dir[d][1];
+                if(c>=0 && r>=0 && r<boxes.size() && c<boxes[0].size() && boxes[r][c])
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public static int nqueens(boolean[3][3] boxes,int tnq,int qpsf,int vidx,string ans)
+    {
+        if(ans==boxes.size()*boxes[0].size()||qpsf==tnq)
+        {
+            if(qpsf==tnq)
+            {
+                System.out.println(ans+" ");
+                return 1;
+            }
+            return 0;
+        }
+        int x=vidx/boxes.size();
+        int y=vidx%boxes[0].size();
+        if(issafetoplace(boxes,x,y))
+        {
+            boxes[x][y]=true;
+            count+=nqueens(boxes,tnq,qpsf+1,vidx+1,ans+"["+to_string(x)+"-"+to_string(y)+"]");
+            boxes[x][y]=false;
+        }
+        count+=nqueens(boxes,tnq,qpsf,vidx+1,ans);
+        return count;
+    }
+    public static void main(String[] args)
+    {
+        //stringcompress("aaabbbbbcc","",1);
+        //mazepath(0,0,2,2,"");
+        //multimoves(0,0,2,2,"");
+        int[] arr={2,3,5,7};
+        boolean[] isdone={false,false,false,false,false};
+        //boardpath(10,0,"");
+        //permutation("abcd","");
+        //permu_nodupli("aaabcd","");
+        //coinchagepermu_1(arr,10,"");
+        //coinchangecombi_2(arr,10,0,"");
+        //coinchangepermu_nodupli(arr,10,isdone,"");
+        //coinchangepermu_3(arr,0,10,"");
+        //coinchangecombi_3(arr,10,0,"");
+        //System.out.println(equiset(arr,0,0,0,"",""));
+        //System.out.println(queenpermu(5,3,0,isdone,""));
+        //qsubseqcombi(5,3,0,0,"");
+        //qsubseqpermu(5,3,0,0,isdone,"");
+        boolean[][] boxes=new boolean[3][3];
+        boxes={{false,false,false},{false,false,false},{false,false,false}};
+        System.out.println(nqueens(boxes,3,0,0,""));
+    }
+}
